@@ -8,6 +8,14 @@ class Empleado:
                 return empleado
         return None
 
+    @property
+    def salas_a_cargo(self):
+        salas = []
+        for sala in Sala.salas:
+            if sala.encargado.id == self.id:
+                salas.append(sala)
+        return salas
+
     # def __init__(self, nombre, cargo, sueldo):
     def __init__(self, **kwargs):
         self.id = len(self.__class__.empleados_disponibles) + 1
@@ -24,10 +32,13 @@ class Empleado:
         return f"Hola, {destinatario.nombre}, soy {self.nombre}, mucho gusto."
 
 class Sala:
+    salas = []
+
     def __init__(self, **kwargs):
         self.capacity = kwargs["capacity"]
         self.vip = kwargs["vip"]
         self.empleado_id = None
+        self.__class__.salas.append(self)
 
     def asignar_encargado(self, empleado_id):
         self.empleado_id = empleado_id
